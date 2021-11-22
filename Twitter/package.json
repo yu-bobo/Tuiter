@@ -1,0 +1,18 @@
+{
+  "name": "twitter",
+  "version": "1.0.0",
+  "description": "Make sure you don't miss the special day",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "special",
+    "day"
+  ],
+  "author": "town",
+  "license": "ISC",
+  "dependencies": {
+    "@vant/weapp": "^1.9.2"
+  }
+}

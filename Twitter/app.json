@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/overView/index",
+    "pages/management/index",
+    "pages/message/index",
+    "pages/mine/index",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#f98eba",
+    "navigationBarTitleText": "推特儿",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#000000",
+    "selectedColor": "#268dcd",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [{
+        "pagePath": "pages/overView/index",
+        "text": "总览"
+      },
+      {
+        "pagePath": "pages/management/index",
+        "text": "管理"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

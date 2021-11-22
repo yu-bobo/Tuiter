@@ -1,0 +1,11 @@
+/* pages/jokePicture/index.wxss */
+.jokePicture{
+    width: 96%;
+    margin: auto;
+    box-shadow: 3rpx 15rpx rgb(231, 226, 226);
+    margin-top:15rpx;
+    padding: 20rpx;
+}
+image{
+    width: 100%;
+}

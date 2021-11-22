@@ -1,0 +1,9 @@
+<!--pages/message/index.wxml-->
+<view class="jokePicture" wx:for="{{jokePicturedata}}" wx:key="index">
+    <view>标题：{{item.content}}</view>
+    <view class="img">
+        <!-- <img src -->
+        <image src="{{item.pic}}"></image>
+    </view>
+    <view>时间：{{item.addtime}}</view>
+</view>
