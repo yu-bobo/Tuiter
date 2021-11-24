@@ -5,7 +5,7 @@
     <text class="date">2021-11-19</text>
     <van-icon name="plus" size="30" />
   </view>
-  
+
   <van-checkbox-group value="{{result}}" bind:change="onChange" style="width: 100%;">
     <view class="container-item" wx:for="{{dataList}}" wx:key="index">
       <view class="checkbox" wx:if="{{showCheckBox}}">

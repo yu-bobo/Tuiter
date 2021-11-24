@@ -9,7 +9,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#f98eba",
-    "navigationBarTitleText": "推特儿",
+    "navigationBarTitleText": "Tuiter",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {

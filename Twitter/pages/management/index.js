@@ -18,13 +18,13 @@ Page({
       id: 3,
       checked: false,
       imgSrc: '/images/index.png',
-      eventName: '春节节',
+      eventName: '春节',
       afterTime: '65天后'
     }, {
       id: 4,
       checked: false,
       imgSrc: '/images/index.png',
-      eventName: '劳动节',
+      eventName: '劳动节劳动节劳动节劳动节劳动节劳动节',
       afterTime: '250天后'
     }],
     result: [1, 2]

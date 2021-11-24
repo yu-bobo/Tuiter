@@ -48,7 +48,7 @@
   "compileType": "miniprogram",
   "libVersion": "2.20.2",
   "appid": "wxd3fe6f3d51f6b85e",
-  "projectname": "%E8%B6%A3%E5%91%B3%E7%AC%91%E8%AF%9D",
+  "projectname": "Tuiter",
   "debugOptions": {
     "hidedInDevtools": []
   },
