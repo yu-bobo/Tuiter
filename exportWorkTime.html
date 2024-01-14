@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出勤表导出</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+    <script src="https://momentjs.bootcss.com/downloads/moment.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-plus"></script>
+
+</head>
+<style>
+    .el-form {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -60%);
+        transform: translate(-50%, -60%);
+    }
+
+    @media screen and (max-width: 1100px) {
+        .el-form {
+            width: 90%
+        }
+    }
+</style>
+
+<body>
+    <div id="app">
+        <el-form :model="form" label-width="80px">
+            <el-form-item label="人员姓名">
+                <el-input v-model="form.name" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="考勤时间">
+                <el-col :span="11">
+                    <el-date-picker v-model="form.startTime" type="date" placeholder="开始时间" style="width: 100%;"
+                        value-format="YYYY-MM-DD">
+                    </el-date-picker>
+                </el-col>
+                <el-col class="line" :span="2" style="text-align:center">-</el-col>
+                <el-col :span="11">
+                    <el-date-picker v-model="form.endTime" type="date" placeholder="结束时间" style="width: 100%;"
+                        value-format="YYYY-MM-DD">
+                    </el-date-picker>
+                </el-col>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="exportExcel">导出出勤表</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+</body>
+<script type="module">
+
+    import { read, writeFileXLSX, utils } from "https://cdn.sheetjs.com/xlsx-0.18.10/package/xlsx.mjs"
+    const { createApp, reactive, toRefs } = Vue
+    const vue3Composition = {
+        setup () {
+            const form = reactive({
+                name: '张三丰',
+                startTime: moment().startOf('month').format('YYYY-MM-DD'),
+                endTime: moment().endOf('month').format('YYYY-MM-DD')
+            })
+            // 导出表格
+            const exportExcel = () => {
+                // 1、创建工作表 worksheet
+                const wb = utils.book_new()
+                // 2.数据组装
+                let tableData = getWorkDay({ startTime: form.startTime, endTime: form.endTime }).map(time => {
+                    return ['', '', form.name || 'xxx', time + '', time + ' 09:00:00', time + ' 18:00:00',]
+                })
+                tableData = [['事业部ID', '人员ID', '人员姓名', '考勤日期', '上班时间', '下班时间'], ...tableData]
+                const ws = utils.aoa_to_sheet(tableData)
+                const cols = tableData[0].map((item, index) => {
+                    if (index <= 3) {
+                        return { wch: 10 }
+                    } else {
+                        return { wch: 20 }
+                    }
+                })
+                ws['!cols'] = cols // 设置列宽信息到工作表
+                // 3.设置样式
+                for (let key in ws) {
+                    if (key.indexOf('!') !== 0) {
+                        // 判断出表头
+                        if (isNaN(Number(key)) && key.slice(1) === '1') {
+                            ws[key]['s'] = {
+                                font: {
+                                    sz: '20',// 设置标题的字号
+                                    bold: true,// 设置标题是否加粗
+                                },
+                                alignment: { horizontal: 'center', vertical: 'center', wrapText: true },// 设置标题水平竖直方向居中，并自动换行展示
+                                fill: {
+                                    fgColor: { rgb: 'red' }// 设置标题单元格的背景颜色
+                                }
+                            }
+                        } else {
+                            // 内容居右
+                            ws[key]['s'] = {
+                                font: {
+                                    sz: '10',
+                                },
+                                alignment: { horizontal: 'right', vertical: 'center', },
+                            }
+                        }
+                    }
+                }
+                console.log(ws)
+                // 4、把工作表放到工作簿中 
+                utils.book_append_sheet(wb, ws, 'sheet')
+                // 5、生成数据保存
+                writeFileXLSX(wb, `${form.name || 'xxx'}出勤表.xlsx`, {
+                    bookType: 'xlsx'
+                })
+            }
+            // 获取工作日
+            const getWorkDay = ({ startTime = '2022-10-01', endTime = '2022-12-01' }) => {
+                const workDayList = []
+                // 循环比较时间
+                while (moment(startTime).isSameOrBefore(endTime, 'day')) {
+                    // 找出工作日
+                    if (moment(startTime).day() !== 0 && moment(startTime).day() !== 6) {
+                        workDayList.push(moment(startTime).format('YYYY/M/D'))
+                    }
+                    startTime = moment(startTime).add(1, "days").format('YYYY-MM-DD')
+                }
+                return workDayList
+            }
+            return {
+                form,
+                exportExcel
+            }
+        }
+    }
+    const app = createApp(vue3Composition).use(ElementPlus).mount('#app');
+</script>
+
+</html>
